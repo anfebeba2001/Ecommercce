@@ -10,4 +10,10 @@ import {ProductComponent} from './../../components//product/product.component'
 })
 export class ListComponent {
 
+
+  fromChild(event: string) {
+    console.log("Estamos en el padre");
+    console.log(event);
+}
+
 }
