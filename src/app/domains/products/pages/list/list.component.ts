@@ -1,8 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {ProductComponent} from './../../components//product/product.component'
 import { Product } from '../../../Share/models/product.model';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { CommonModule, NgFor } from '@angular/common';
+import { CartService } from '../../../shared/services/cart.service';
+import { ProductService } from '../../../shared/services/product.service';
 
 @Component({
   selector: 'app-list',
@@ -13,40 +15,11 @@ import { CommonModule, NgFor } from '@angular/common';
 })
 export class ListComponent {
 
-  products = signal<Product[]>([{
-    id: Date.now() +4,
-    title: 'pro 1', 
-    price: 100,
-    image: 'https://picsum.photos/640/640?r=23',
-    creationAt: new Date().toISOString()
-  
-  
-  },
-  {
-    id: Date.now()+3 ,
-    title: 'pro 2', 
-    price: 400,
-    image: 'https://picsum.photos/640/640?r=12',
-    creationAt: new Date().toISOString()
-  
-  
-  },{
-    id: Date.now() +2,
-    title: 'pro 3', 
-    price: 800,
-    image: 'https://picsum.photos/640/640?r=11',
-    creationAt: new Date().toISOString()
-  
-  
-  },{
-    id: Date.now() +1,
-    title: 'pro 4', 
-    price: 1600,
-    image: 'https://picsum.photos/640/640?r=14',
-    creationAt: new Date().toISOString()
-  
-  
-  } ]);
+
+
+  private cartService = inject(CartService);
+  private productService = inject(ProductService)
+  products = signal<Product[]>([]);
 
   constructor() {
     const initProducts: Product[] = [
@@ -54,9 +27,21 @@ export class ListComponent {
     ]
   }
 
-  fromChild(event: string) {
-    console.log("Estamos en el padre");
-    console.log(event);
+  ngOnInit(){
+    this.productService.getProducts().subscribe({
+      next : (products) => {
+        products.forEach(product => product.creationAt = new Date().toISOString())
+        this.products.set(products);
+      }, 
+      error: () => {
+
+      }
+    })
+    
+  }
+
+  addToCart(product: Product) {
+    this.cartService.addToCart(product)
 }
 
 }

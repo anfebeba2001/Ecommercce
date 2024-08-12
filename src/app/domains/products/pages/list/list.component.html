@@ -1,9 +1,9 @@
 <div class="container mx-auto">
-<app-header/>
+<app-header />
 <div class = "grid grid-cols-4 gap-8">
    <app-product *ngFor="let product of products()"
-   [product]="product"
-   (addToCart)="fromChild($event)"/>
+   [product]="product"   
+   (addToCart)="addToCart($event)"/>
 
 </div>
 </div>
