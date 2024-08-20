@@ -12,15 +12,14 @@ import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browse
 export class ProductService {
 
   private http = inject(HttpClient);
-
   constructor(private _sanitizer: DomSanitizer) {}
 
-
-  
   getProducts(){
-    return this.http.get<Product[]>(' https://fakestoreapi.com/products')
-     
-    
+    return this.http.get<Product[]>("https://fakestoreapi.com/products");
+  }
+
+  getOne(id: string){
+    return this.http.get<Product>("https://fakestoreapi.com/products"+ "/"+id);
   }
 }
 
